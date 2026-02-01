@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/sms"
+  },
+  "response": {
+    "status": 200,
+    "body": "SMS notification sent successfully",
+    "headers": {
+      "Content-Type": "text/plain"
+    }
+  }
+}

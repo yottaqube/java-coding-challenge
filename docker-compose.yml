@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  order-processing-app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - NOTIFICATION_CHANNELS_EMAIL_URL=http://wiremock:8080/email
+      - NOTIFICATION_CHANNELS_SMS_URL=http://wiremock:8080/sms
+    depends_on:
+      - wiremock
+    networks:
+      - order-network
+
+  wiremock:
+    image: wiremock/wiremock:2.35.0
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./wiremock/mappings:/home/wiremock/mappings
+      - ./wiremock/__files:/home/wiremock/__files
+    command: --global-response-templating --verbose
+    networks:
+      - order-network
+
+networks:
+  order-network:
+    driver: bridge
